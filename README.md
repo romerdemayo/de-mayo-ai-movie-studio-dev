@@ -1,5 +1,11 @@
 # De Mayo AI Movie Studio
 
+## Build 1.3 — Character Continuity
+
+Build 1.3 adds reusable Character Cards for consistent AI filmmaking. Elias, Anna and The Guardian are included as starter actors. Each card locks facial features, body appearance, signature clothing, personality and voice direction. Cards can be reused across movies, assigned per scene, imported, exported, edited, duplicated or deleted.
+
+Scene prompts are rebuilt from the selected character cards so every generated image receives the same identity description. Character cards and movie projects are stored locally in the browser.
+
 A mobile-friendly GitHub Pages app for planning and rendering original Tagalog AI-assisted movies. Build 1.2 adds a local media timeline, scene images and audio, animated cinematic previews, burned-in subtitles, and browser-based YouTube video rendering.
 
 ## Run locally

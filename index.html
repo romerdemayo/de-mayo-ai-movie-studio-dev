@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="tl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#11101a">
+  <meta name="description" content="Create original Tagalog stories, fictional AI actors, scripts and storyboards for YouTube.">
+  <title>De Mayo AI Movie Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="De Mayo AI Movie Studio home">
+      <span class="brand-mark">DM</span>
+      <span><strong>De Mayo</strong><small>AI Movie Studio</small></span>
+    </a>
+    <div class="top-actions">
+      <span id="saveStatus" class="save-status">Saved locally</span>
+      <button class="icon-button" id="newProjectBtn" title="New project" aria-label="New project">＋</button>
+    </div>
+  </header>
+
+  <nav class="stepper" aria-label="Movie creation steps">
+    <button class="step active" data-view="home"><span>1</span><b>Story</b></button>
+    <button class="step" data-view="actors"><span>2</span><b>Actors</b></button>
+    <button class="step" data-view="script"><span>3</span><b>Script</b></button>
+    <button class="step" data-view="storyboard"><span>4</span><b>Scenes</b></button>
+    <button class="step" data-view="export"><span>5</span><b>Export</b></button>
+  </nav>
+
+  <main>
+    <section class="view active" id="home">
+      <div class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">BUILD 1.0 · TAGALOG STORY CREATOR</span>
+          <h1>Ang kuwento mo.<br><em>Ang pelikula mo.</em></h1>
+          <p>Create an original Tagalog movie concept, fictional actors and a complete scene plan—ready for YouTube production.</p>
+        </div>
+        <div class="film-card" aria-hidden="true">
+          <div class="film-glow"></div>
+          <span class="clapper">🎬</span>
+          <b>FROM IDEA</b><strong>TO SCREEN</strong>
+        </div>
+      </div>
+
+      <form id="storyForm" class="panel story-form">
+        <div class="panel-heading">
+          <div><span class="section-number">01</span><h2>Build your story</h2></div>
+          <button type="button" class="text-button" id="surpriseBtn">✦ Surprise me</button>
+        </div>
+        <div class="field full">
+          <label for="title">Working title</label>
+          <input id="title" placeholder="Halimbawa: Liwanag sa Gitna ng Ulan" autocomplete="off">
+        </div>
+        <fieldset class="field full">
+          <legend>Choose a genre</legend>
+          <div class="genre-grid" id="genreGrid">
+            <label><input type="radio" name="genre" value="Christian" checked><span>🙏<b>Christian</b><small>Faith & hope</small></span></label>
+            <label><input type="radio" name="genre" value="Family Drama"><span>🏠<b>Family</b><small>Love & sacrifice</small></span></label>
+            <label><input type="radio" name="genre" value="Romance"><span>🌹<b>Romance</b><small>Love story</small></span></label>
+            <label><input type="radio" name="genre" value="Mystery"><span>🌙<b>Mystery</b><small>Secrets & suspense</small></span></label>
+            <label><input type="radio" name="genre" value="Comedy"><span>😄<b>Comedy</b><small>Light & funny</small></span></label>
+            <label><input type="radio" name="genre" value="Children"><span>🌈<b>Children</b><small>Fun & lessons</small></span></label>
+          </div>
+        </fieldset>
+        <div class="field full">
+          <label for="idea">What should happen in the story?</label>
+          <textarea id="idea" rows="5" placeholder="Describe your idea in Tagalog or English. Example: Isang ama na nawalan ng trabaho ang muling natutong manalig habang inililigtas ang tahanan ng kanyang pamilya."></textarea>
+          <span class="hint"><b id="ideaCount">0</b>/800 characters</span>
+        </div>
+        <div class="field">
+          <label for="duration">Movie length</label>
+          <select id="duration"><option value="3">3 minutes · Short</option><option value="5" selected>5 minutes · Standard</option><option value="8">8 minutes · Detailed</option><option value="12">12 minutes · Extended</option></select>
+        </div>
+        <div class="field">
+          <label for="audience">Audience</label>
+          <select id="audience"><option>Family-friendly</option><option>Adults</option><option>Teenagers</option><option>Children</option></select>
+        </div>
+        <div class="field">
+          <label for="visualStyle">Visual style</label>
+          <select id="visualStyle"><option>Cinematic 3D animation</option><option>Realistic cinematic</option><option>Watercolour animation</option><option>Filipino comic-book style</option></select>
+        </div>
+        <div class="field">
+          <label for="ending">Ending</label>
+          <select id="ending"><option>Hopeful</option><option>Emotional</option><option>Surprising</option><option>Open-ended</option></select>
+        </div>
+        <button class="primary full" type="submit"><span>✦</span> Create movie plan</button>
+      </form>
+    </section>
+
+    <section class="view" id="actors">
+      <div class="page-heading"><span class="eyebrow">CASTING ROOM</span><h1>Create your fictional actors</h1><p>Each actor receives a locked visual identity that can be reused in every scene prompt.</p></div>
+      <div class="toolbar"><button class="secondary" id="generateCastBtn">✦ Generate suggested cast</button><button class="secondary" id="addActorBtn">＋ Add actor</button></div>
+      <div id="actorGrid" class="actor-grid"></div>
+      <div class="bottom-nav"><button class="secondary go" data-go="home">← Story</button><button class="primary go" data-go="script">Continue to script →</button></div>
+    </section>
+
+    <section class="view" id="script">
+      <div class="page-heading"><span class="eyebrow">WRITER'S ROOM</span><h1>Tagalog movie script</h1><p>Edit the generated outline and dialogue. Your changes save automatically.</p></div>
+      <div class="script-meta panel"><div><small>TITLE</small><strong id="scriptTitle">Untitled Movie</strong></div><div><small>GENRE</small><strong id="scriptGenre">Christian</strong></div><div><small>EST. LENGTH</small><strong id="scriptLength">5 minutes</strong></div></div>
+      <div class="panel"><div class="panel-heading"><div><span class="section-number">02</span><h2>Story treatment</h2></div><button class="text-button" id="regenerateScriptBtn">↻ Regenerate</button></div><textarea id="treatment" class="editor" rows="14"></textarea></div>
+      <div class="bottom-nav"><button class="secondary go" data-go="actors">← Actors</button><button class="primary go" data-go="storyboard">Build storyboard →</button></div>
+    </section>
+
+    <section class="view" id="storyboard">
+      <div class="page-heading"><span class="eyebrow">DIRECTOR'S BOARD</span><h1>Scene-by-scene storyboard</h1><p>Every scene includes dialogue, visual direction and a reusable image prompt.</p></div>
+      <div class="toolbar"><span id="sceneCount">0 scenes</span><button class="secondary" id="addSceneBtn">＋ Add scene</button></div>
+      <div id="sceneList" class="scene-list"></div>
+      <div class="bottom-nav"><button class="secondary go" data-go="script">← Script</button><button class="primary go" data-go="export">Continue to export →</button></div>
+    </section>
+
+    <section class="view" id="export">
+      <div class="page-heading"><span class="eyebrow">PRODUCTION PACK</span><h1>Ready for production</h1><p>Download your complete movie plan. MP4 rendering and voice production will be added in a later build.</p></div>
+      <div class="export-grid">
+        <article class="export-card"><span>📄</span><h3>Production script</h3><p>Story, cast, dialogue, directions and prompts in one file.</p><button class="secondary" id="downloadTxtBtn">Download TXT</button></article>
+        <article class="export-card"><span>💾</span><h3>Project backup</h3><p>Save an editable backup that can be restored on this device.</p><button class="secondary" id="downloadJsonBtn">Download project</button></article>
+        <article class="export-card"><span>📺</span><h3>YouTube package</h3><p>Suggested title, description, disclosure and hashtags.</p><button class="secondary" id="youtubeBtn">Create package</button></article>
+      </div>
+      <div id="youtubePackage" class="panel hidden"><div class="panel-heading"><h2>YouTube package</h2><button class="text-button" id="copyPackageBtn">Copy all</button></div><textarea id="youtubeText" class="editor" rows="16" readonly></textarea></div>
+      <div class="panel restore"><div><h3>Restore a saved project</h3><p>Select a De Mayo Movie Studio JSON backup.</p></div><label class="secondary file-label">Choose backup<input type="file" id="restoreInput" accept="application/json"></label></div>
+      <div class="bottom-nav"><button class="secondary go" data-go="storyboard">← Scenes</button><button class="primary go" data-go="home">Return home</button></div>
+    </section>
+  </main>
+
+  <div class="modal hidden" id="actorModal" role="dialog" aria-modal="true" aria-labelledby="actorModalTitle">
+    <form class="modal-card" id="actorForm"><div class="modal-head"><h2 id="actorModalTitle">Actor profile</h2><button type="button" class="icon-button" id="closeActorModal">×</button></div><input type="hidden" id="actorId">
+      <div class="field"><label for="actorName">Name</label><input id="actorName" required></div><div class="field"><label for="actorRole">Role</label><input id="actorRole" placeholder="Main character" required></div><div class="field"><label for="actorAge">Age</label><input id="actorAge" type="number" min="4" max="90" value="30"></div><div class="field"><label for="actorGender">Gender</label><select id="actorGender"><option>Woman</option><option>Man</option><option>Girl</option><option>Boy</option></select></div><div class="field full"><label for="actorLook">Appearance and clothing</label><textarea id="actorLook" rows="3" required></textarea></div><div class="field full"><label for="actorPersonality">Personality</label><textarea id="actorPersonality" rows="2" required></textarea></div><button class="primary full" type="submit">Save actor</button>
+    </form>
+  </div>
+
+  <div id="toast" class="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>

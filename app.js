@@ -26,7 +26,7 @@ function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show'
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
 function currentGenre(){return $('input[name=genre]:checked')?.value||'Christian'}
 
-function showView(id){$$('.view').forEach(v=>v.classList.toggle('active',v.id===id));$$('.step').forEach(s=>s.classList.toggle('active',s.dataset.view===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='actors')renderActors();if(id==='script')renderScript();if(id==='storyboard')renderScenes()}
+function showView(id){$$('.view').forEach(v=>v.classList.toggle('active',v.id===id));$$('.step').forEach(s=>s.classList.toggle('active',s.dataset.view===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='actors')renderActors();if(id==='script')renderScript();if(id==='storyboard')renderScenes();if(id==='export')renderMediaTimeline()}
 $$('.step').forEach(b=>b.onclick=()=>showView(b.dataset.view));$$('.go').forEach(b=>b.onclick=()=>showView(b.dataset.go));
 
 function syncForm(){$('#title').value=project.title;$('#idea').value=project.idea;$('#duration').value=project.duration;$('#audience').value=project.audience;$('#visualStyle').value=project.visualStyle;$('#ending').value=project.ending;const radio=$(`input[name=genre][value="${project.genre}"]`);if(radio)radio.checked=true;$('#ideaCount').textContent=project.idea.length}
@@ -57,4 +57,32 @@ $('#youtubeBtn').onclick=()=>{const text=`TITLE\n${project.title} | Original Tag
 $('#restoreInput').onchange=async e=>{try{const data=JSON.parse(await e.target.files[0].text());project={...blank,...data};save();syncForm();toast('Project restored');showView('home')}catch{toast('This backup could not be restored')}};
 $('#newProjectBtn').onclick=()=>{if(confirm('Start a new movie? Download a backup first if you want to keep this project.')){project={...blank,actors:[],scenes:[]};save();syncForm();showView('home');toast('New project ready')}};
 function esc(v=''){return String(v).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}function attr(v=''){return esc(v).replace(/"/g,'&quot;')}function slug(v='movie'){return(v||'movie').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'movie'}
+
+// Build 1.2 media is intentionally session-only: large files never enter localStorage.
+const sceneMedia=new Map();let stopPlayback=false;
+function mediaFor(id){if(!sceneMedia.has(id))sceneMedia.set(id,{image:null,imageUrl:'',audio:null,audioUrl:'',duration:6});return sceneMedia.get(id)}
+function renderMediaTimeline(){
+  const timeline=$('#mediaTimeline');
+  if(!project.scenes.length){timeline.innerHTML='<p class="studio-note">Create your storyboard scenes first.</p>';updateMediaReady();return}
+  timeline.innerHTML=project.scenes.map((s,i)=>{const m=mediaFor(s.id);return `<div class="media-row" data-media="${s.id}"><span class="media-index">${i+1}</span><div class="media-info"><strong>${esc(s.title)}</strong><small>${m.image?esc(m.image.name):'No image selected'}${m.audio?' · Audio: '+esc(m.audio.name):''}</small></div><div class="media-files"><label class="secondary ${m.image?'ready':''}">🖼 ${m.image?'Replace':'Add'} image<input data-image type="file" accept="image/*"></label><label class="secondary ${m.audio?'ready':''}">🔊 ${m.audio?'Replace':'Add'} audio<input data-audio type="file" accept="audio/*"></label><label>Seconds <input class="duration-input" data-duration type="number" min="2" max="60" step="1" value="${m.duration}"></label></div></div>`}).join('');
+  $$('[data-media] [data-image]').forEach(input=>input.onchange=()=>setMediaFile(input,'image'));
+  $$('[data-media] [data-audio]').forEach(input=>input.onchange=()=>setMediaFile(input,'audio'));
+  $$('[data-media] [data-duration]').forEach(input=>input.onchange=()=>{mediaFor(input.closest('[data-media]').dataset.media).duration=Math.max(2,Math.min(60,+input.value||6))});
+  updateMediaReady();
+}
+function setMediaFile(input,type){const file=input.files[0];if(!file)return;const m=mediaFor(input.closest('[data-media]').dataset.media),urlKey=type+'Url';if(m[urlKey])URL.revokeObjectURL(m[urlKey]);m[type]=file;m[urlKey]=URL.createObjectURL(file);renderMediaTimeline();toast(`${type==='image'?'Image':'Audio'} added`)}
+function updateMediaReady(){const ready=project.scenes.filter(s=>mediaFor(s.id).image).length;$('#mediaReady').textContent=`${ready} / ${project.scenes.length} images ready`;$('#previewEmpty').classList.toggle('hidden',ready>0)}
+function loadImage(url){return new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=reject;img.src=url})}
+function wait(ms){return new Promise(resolve=>setTimeout(resolve,ms))}
+function wrapText(ctx,text,maxWidth){const words=(text||'').replace(/^[^:]+:\s*/, '').split(/\s+/),lines=[];let line='';for(const word of words){const test=line?line+' '+word:word;if(ctx.measureText(test).width>maxWidth&&line){lines.push(line);line=word}else line=test}if(line)lines.push(line);return lines.slice(0,3)}
+function drawFrame(ctx,img,scene,progress,w,h){ctx.fillStyle='#05050a';ctx.fillRect(0,0,w,h);if(img){const scale=Math.max(w/img.width,h/img.height)*(1+.045*progress),dw=img.width*scale,dh=img.height*scale,x=(w-dw)/2-(progress-.5)*w*.025,y=(h-dh)/2;ctx.drawImage(img,x,y,dw,dh)}const shade=ctx.createLinearGradient(0,h*.55,0,h);shade.addColorStop(0,'transparent');shade.addColorStop(1,'rgba(0,0,0,.88)');ctx.fillStyle=shade;ctx.fillRect(0,0,w,h);if($('#burnSubtitles').checked){ctx.textAlign='center';ctx.font=`700 ${Math.round(w*.032)}px Arial`;ctx.lineWidth=Math.max(3,w*.004);ctx.strokeStyle='rgba(0,0,0,.95)';ctx.fillStyle='white';const lines=wrapText(ctx,scene.dialogue,w*.82),lineH=w*.042,start=h-w*.055*(lines.length);lines.forEach((line,i)=>{ctx.strokeText(line,w/2,start+i*lineH);ctx.fillText(line,w/2,start+i*lineH)})}}
+async function playMovie(record=false){
+  const usable=project.scenes.filter(s=>mediaFor(s.id).image);if(!usable.length){toast('Add at least one scene image first');return}
+  stopPlayback=false;const canvas=$('#movieCanvas'),quality=+$('#renderQuality').value,ctx=canvas.getContext('2d');canvas.width=quality;canvas.height=Math.round(quality*9/16);$('#stopPreviewBtn').classList.remove('hidden');$('#renderStatus').textContent=record?'Rendering…':'Previewing…';
+  let recorder,chunks=[],mime='',audioCtx=null,audioDest=null;if(record){const choices=['video/mp4;codecs=avc1','video/webm;codecs=vp9,opus','video/webm'];mime=choices.find(x=>MediaRecorder.isTypeSupported(x))||'';const stream=canvas.captureStream(30);audioCtx=new AudioContext();audioDest=audioCtx.createMediaStreamDestination();audioDest.stream.getAudioTracks().forEach(track=>stream.addTrack(track));recorder=new MediaRecorder(stream,mime?{mimeType:mime,videoBitsPerSecond:quality===1920?9000000:5000000}:undefined);recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};recorder.start(1000)}
+  for(const scene of usable){if(stopPlayback)break;const m=mediaFor(scene.id),img=await loadImage(m.imageUrl),duration=m.duration*1000,start=performance.now();let audio=null;if(m.audioUrl){audio=new Audio(m.audioUrl);if(record&&audioCtx){const source=audioCtx.createMediaElementSource(audio);source.connect(audioDest);source.connect(audioCtx.destination)}audio.play().catch(()=>{})}while(!stopPlayback&&performance.now()-start<duration){const p=Math.min(1,(performance.now()-start)/duration);drawFrame(ctx,img,scene,p,canvas.width,canvas.height);await wait(33)}if(audio){audio.pause();audio.currentTime=0}}
+  if(recorder&&recorder.state!=='inactive'){await new Promise(resolve=>{recorder.onstop=resolve;recorder.stop()});if(!stopPlayback){const ext=mime.includes('mp4')?'mp4':'webm',blob=new Blob(chunks,{type:mime||'video/webm'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`${slug(project.title)}-youtube.${ext}`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);toast(`${ext.toUpperCase()} movie created`)}}
+  if(audioCtx)audioCtx.close();$('#stopPreviewBtn').classList.add('hidden');$('#renderStatus').textContent=stopPlayback?'Stopped':'Complete';
+}
+$('#previewMovieBtn').onclick=()=>playMovie(false);$('#renderMovieBtn').onclick=()=>playMovie(true);$('#stopPreviewBtn').onclick=()=>{stopPlayback=true};
 syncForm();

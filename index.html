@@ -36,7 +36,7 @@
     <section class="view active" id="home">
       <div class="hero">
         <div class="hero-copy">
-          <span class="eyebrow">BUILD 1.4 · HYBRID VOICE STUDIO</span>
+          <span class="eyebrow">BUILD 1.5 · TRUE AI MEDIA STUDIO</span>
           <h1>Ang kuwento mo.<br><em>Ang pelikula mo.</em></h1>
           <p>Create an original Tagalog movie concept, fictional actors and a complete scene plan—ready for YouTube production.</p>
         </div>
@@ -121,10 +121,11 @@
     </section>
 
     <section class="view" id="export">
-      <div class="page-heading"><span class="eyebrow">MOVIE EXPORT STUDIO</span><h1>Create your YouTube video</h1><p>Add one image and optional audio track per scene, preview the movie, then render a YouTube-ready video on your device.</p></div>
+      <div class="page-heading"><span class="eyebrow">TRUE AI MOVIE STUDIO</span><h1>Generate your scenes and voices</h1><p>Create real AI scene images and downloadable Tagalog audio, then render a YouTube-ready movie.</p></div>
+      <div class="panel ai-connection"><div class="panel-heading"><div><span class="section-number">AI</span><h2>Secure AI connection</h2></div><span id="aiStatus" class="connection-badge">Not connected</span></div><p class="studio-note">Enter your deployed Worker address. Your OpenAI key stays in the Worker secret and is never stored in this website.</p><div class="render-controls"><label class="endpoint-field">Worker address<input id="aiEndpoint" type="url" placeholder="https://de-mayo-movie-ai.your-name.workers.dev"></label><button class="secondary" id="testAiBtn">Test connection</button><button class="primary" id="generateAllBtn">✦ Generate all scenes + audio</button></div><div id="aiProgress" class="ai-progress hidden"><span></span><strong>Preparing…</strong></div></div>
       <div class="panel media-studio">
         <div class="panel-heading"><div><span class="section-number">05</span><h2>Scene media timeline</h2></div><span id="mediaReady">0 / 0 images ready</span></div>
-        <p class="studio-note">Media stays on this device and is not uploaded to GitHub. For the best result, use 1920 × 1080 landscape images. Optional audio may contain narration, dialogue, music and effects already mixed for that scene.</p>
+        <p class="studio-note">Generated media stays in this browser session. Download important files before closing the page. Manual upload remains available as a fallback.</p>
         <div id="mediaTimeline" class="media-timeline"></div>
       </div>
       <div class="panel voice-studio">

@@ -1,5 +1,18 @@
 # De Mayo AI Movie Studio
 
+## Build 1.5 — True AI Scene and Audio Generator
+
+Build 1.5 adds real AI-generated landscape scene images and downloadable Tagalog MP3 dialogue. Generated media is inserted into the timeline automatically and captured in the exported movie. API credentials remain in the included Cloudflare Worker secret, never in GitHub Pages.
+
+### Secure Worker setup
+
+1. Deploy the `worker` directory with Cloudflare Workers.
+2. Add the secret `OPENAI_API_KEY` to the Worker.
+3. Confirm `ALLOWED_ORIGIN` in `worker/wrangler.toml` matches `https://romerdemayo.github.io`.
+4. Paste the deployed `workers.dev` address into **Secure AI connection** in the app and test it.
+
+The default economical models are `gpt-image-1-mini` (low-quality 1536×1024 JPEG) and `gpt-4o-mini-tts` (MP3). API usage is paid by the connected OpenAI account and is not unlimited or free.
+
 ## Build 1.4 — Hybrid Voice Studio
 
 Build 1.4 adds automatic browser-based Tagalog dialogue previews, voice selection, speed and pitch controls, Character Card speed matching, per-scene voice tests, and automatic dialogue timing. The app continues to accept uploaded audio for the final rendered MP4/WebM because browser speech synthesis cannot be captured reliably into a downloaded video.

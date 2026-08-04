@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="build12.css">
 </head>
 <body>
   <header class="topbar">
@@ -35,7 +36,7 @@
     <section class="view active" id="home">
       <div class="hero">
         <div class="hero-copy">
-          <span class="eyebrow">BUILD 1.1 · CINEMATIC FILIPINO FANTASY</span>
+          <span class="eyebrow">BUILD 1.2 · MOVIE EXPORT STUDIO</span>
           <h1>Ang kuwento mo.<br><em>Ang pelikula mo.</em></h1>
           <p>Create an original Tagalog movie concept, fictional actors and a complete scene plan—ready for YouTube production.</p>
         </div>
@@ -114,7 +115,24 @@
     </section>
 
     <section class="view" id="export">
-      <div class="page-heading"><span class="eyebrow">PRODUCTION PACK</span><h1>Ready for production</h1><p>Download your complete movie plan. MP4 rendering and voice production will be added in a later build.</p></div>
+      <div class="page-heading"><span class="eyebrow">MOVIE EXPORT STUDIO</span><h1>Create your YouTube video</h1><p>Add one image and optional audio track per scene, preview the movie, then render a YouTube-ready video on your device.</p></div>
+      <div class="panel media-studio">
+        <div class="panel-heading"><div><span class="section-number">05</span><h2>Scene media timeline</h2></div><span id="mediaReady">0 / 0 images ready</span></div>
+        <p class="studio-note">Media stays on this device and is not uploaded to GitHub. For the best result, use 1920 × 1080 landscape images. Optional audio may contain narration, dialogue, music and effects already mixed for that scene.</p>
+        <div id="mediaTimeline" class="media-timeline"></div>
+      </div>
+      <div class="panel preview-studio">
+        <div class="panel-heading"><div><span class="section-number">06</span><h2>Preview and render</h2></div><span id="renderStatus">Ready</span></div>
+        <div class="movie-screen"><canvas id="movieCanvas" width="1280" height="720"></canvas><div id="previewEmpty">Add scene images to begin your preview</div></div>
+        <div class="render-controls">
+          <label>Quality<select id="renderQuality"><option value="1280">HD 720p · Faster</option><option value="1920">Full HD 1080p</option></select></label>
+          <label class="check-label"><input type="checkbox" id="burnSubtitles" checked> Burn Tagalog subtitles into video</label>
+          <button class="secondary" id="previewMovieBtn">▶ Preview movie</button>
+          <button class="primary" id="renderMovieBtn">🎬 Render YouTube video</button>
+          <button class="secondary hidden" id="stopPreviewBtn">■ Stop</button>
+        </div>
+        <p class="format-note">The app uses MP4 when your browser supports it; otherwise it creates WebM, which YouTube also accepts.</p>
+      </div>
       <div class="export-grid">
         <article class="export-card"><span>📄</span><h3>Production script</h3><p>Story, cast, dialogue, directions and prompts in one file.</p><button class="secondary" id="downloadTxtBtn">Download TXT</button></article>
         <article class="export-card"><span>💾</span><h3>Project backup</h3><p>Save an editable backup that can be restored on this device.</p><button class="secondary" id="downloadJsonBtn">Download project</button></article>
@@ -122,6 +140,7 @@
       </div>
       <div id="youtubePackage" class="panel hidden"><div class="panel-heading"><h2>YouTube package</h2><button class="text-button" id="copyPackageBtn">Copy all</button></div><textarea id="youtubeText" class="editor" rows="16" readonly></textarea></div>
       <div class="panel restore"><div><h3>Restore a saved project</h3><p>Select a De Mayo Movie Studio JSON backup.</p></div><label class="secondary file-label">Choose backup<input type="file" id="restoreInput" accept="application/json"></label></div>
+      <div class="copyright-notice">© 2026 Romer De Mayo. De Mayo AI Movie Studio. All rights reserved. Your original movie projects remain yours; you are responsible for rights to uploaded media. <a href="LICENSE">View licence</a>.</div>
       <div class="bottom-nav"><button class="secondary go" data-go="storyboard">← Scenes</button><button class="primary go" data-go="home">Return home</button></div>
     </section>
   </main>

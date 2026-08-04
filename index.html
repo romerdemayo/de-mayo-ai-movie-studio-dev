@@ -36,7 +36,7 @@
     <section class="view active" id="home">
       <div class="hero">
         <div class="hero-copy">
-          <span class="eyebrow">BUILD 1.3 · CHARACTER CONTINUITY</span>
+          <span class="eyebrow">BUILD 1.4 · HYBRID VOICE STUDIO</span>
           <h1>Ang kuwento mo.<br><em>Ang pelikula mo.</em></h1>
           <p>Create an original Tagalog movie concept, fictional actors and a complete scene plan—ready for YouTube production.</p>
         </div>
@@ -127,12 +127,24 @@
         <p class="studio-note">Media stays on this device and is not uploaded to GitHub. For the best result, use 1920 × 1080 landscape images. Optional audio may contain narration, dialogue, music and effects already mixed for that scene.</p>
         <div id="mediaTimeline" class="media-timeline"></div>
       </div>
+      <div class="panel voice-studio">
+        <div class="panel-heading"><div><span class="section-number">VOICE</span><h2>Automatic Tagalog voices</h2></div><span id="voiceStatus">Checking voices…</span></div>
+        <p class="studio-note">Use a Tagalog voice installed in your browser for automatic dialogue previews. Actor speed settings are applied per scene. Uploaded audio is still used in the final rendered file because browsers cannot securely capture system speech into the video.</p>
+        <div class="render-controls">
+          <label>Tagalog voice<select id="tagalogVoice"></select></label>
+          <label>Speed<input id="voiceRate" type="range" min="0.65" max="1.35" value="1" step="0.05"></label>
+          <label>Pitch<input id="voicePitch" type="range" min="0.7" max="1.3" value="1" step="0.05"></label>
+          <button class="secondary" id="testVoiceBtn">🔊 Test Tagalog voice</button>
+          <button class="secondary" id="autoTimingBtn">⏱ Auto-time all scenes</button>
+        </div>
+      </div>
       <div class="panel preview-studio">
         <div class="panel-heading"><div><span class="section-number">06</span><h2>Preview and render</h2></div><span id="renderStatus">Ready</span></div>
         <div class="movie-screen"><canvas id="movieCanvas" width="1280" height="720"></canvas><div id="previewEmpty">Add scene images to begin your preview</div></div>
         <div class="render-controls">
           <label>Quality<select id="renderQuality"><option value="1280">HD 720p · Faster</option><option value="1920">Full HD 1080p</option></select></label>
           <label class="check-label"><input type="checkbox" id="burnSubtitles" checked> Burn Tagalog subtitles into video</label>
+          <label class="check-label"><input type="checkbox" id="speakPreview" checked> Speak Tagalog during preview</label>
           <button class="secondary" id="previewMovieBtn">▶ Preview movie</button>
           <button class="primary" id="renderMovieBtn">🎬 Render YouTube video</button>
           <button class="secondary hidden" id="stopPreviewBtn">■ Stop</button>

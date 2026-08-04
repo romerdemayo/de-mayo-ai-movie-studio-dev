@@ -1,5 +1,9 @@
 # De Mayo AI Movie Studio
 
+## Build 1.4 — Hybrid Voice Studio
+
+Build 1.4 adds automatic browser-based Tagalog dialogue previews, voice selection, speed and pitch controls, Character Card speed matching, per-scene voice tests, and automatic dialogue timing. The app continues to accept uploaded audio for the final rendered MP4/WebM because browser speech synthesis cannot be captured reliably into a downloaded video.
+
 ## Build 1.3 — Character Continuity
 
 Build 1.3 adds reusable Character Cards for consistent AI filmmaking. Elias, Anna and The Guardian are included as starter actors. Each card locks facial features, body appearance, signature clothing, personality and voice direction. Cards can be reused across movies, assigned per scene, imported, exported, edited, duplicated or deleted.
@@ -22,8 +26,8 @@ Build 1.2 works entirely in the browser and does not use paid APIs. Projects are
 
 ## Roadmap
 
-- Build 1.3: built-in narration recording and audio mixing
-- Build 1.4: vertical YouTube Shorts exporter and thumbnail creator
+- Build 1.5: secure optional AI image and voice provider connections
+- Build 1.6: vertical YouTube Shorts exporter and thumbnail creator
 
 ## Copyright
 
